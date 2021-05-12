@@ -1,5 +1,7 @@
 [mybot]
 user = 
 password = 
-server = https://ebad.quranic.network
+server = ebad.quranic.network
+admins = @meisam:quranic.network,@ehsan:quranic.network
+synapse_home = /home/ebad/synapse
 

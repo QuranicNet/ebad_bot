@@ -13,8 +13,9 @@ class MatrixBotAPI:
     # rooms    - List of rooms ids to operate in, or None to accept all rooms
     # token    - Optional token, if set password is ignored and username is
     #            asumed to be a user_id (@<username>:<domain>)
-    def __init__(self, username, password, server, rooms=None, token=None):
+    def __init__(self, username, password, server, rooms=None, token=None, accept_invites=True):
         self.username = username
+        self.accept_invites = accept_invites
 
         # Authenticate with given credentials
         self.client = MatrixClient(server, user_id=username, token=token)
@@ -36,6 +37,8 @@ class MatrixBotAPI:
         # and automatically accept them
         self.rooms = []
         
+        self.general_listener = []
+
         # Store allowed room ids
         self.room_ids = []
         if rooms is None:
@@ -71,6 +74,8 @@ class MatrixBotAPI:
                     if error.code == 403:
                         print('You likely need to invite the bot')
 
+    def add_general_listener(self, listener):
+        self.general_listener.append(listener)
 
     def add_handler(self, handler):
         self.handlers.append(handler)
@@ -80,6 +85,7 @@ class MatrixBotAPI:
         if re.match("@" + self.username, event['sender']):
             return
 
+        handled = False
         # Loop through all installed handlers and see if they need to be called
         for handler in self.handlers:
             if handler.test_callback(room, event):
@@ -88,11 +94,18 @@ class MatrixBotAPI:
                     handler.handle_callback(room, event)
                 except:
                     traceback.print_exc()
+                handled = True
+        if not handled:
+                for listener in self.general_listener:
+                    try:
+                        listener(room,event)
+                    except:
+                        traceback.print_exc()    
 
     def handle_invite(self, room_id, state):
         print("Got invite to room: " + str(room_id))
         print(self.room_ids)
-        if self.room_ids is None or len(self.room_ids)==0 or room_id in self.room_ids:
+        if self.accept_invites or self.room_ids is None or len(self.room_ids)==0 or room_id in self.room_ids:
             print("Joining...")
             room = self.client.join_room(room_id)
 
