@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import traceback
 import sys
 from random import randrange
 import subprocess
@@ -37,8 +38,8 @@ class AdminBot(Bot):
         tparts = text.split(':')
         name = tparts[1].strip()	
 
-#        try:
-        if True:
+        try:
+#        if True:
             if sender in self.admins:
                 room.send_text("تغییر گذرواژه")
                 #name = text[len(self.new_user_command):]
@@ -53,6 +54,7 @@ class AdminBot(Bot):
                 con.commit()
                 con.close()
                 room.send_text("سلام علیکم\nگذرواژه شما تغییر کرد:\n%s"%passw)
+        except Exception as e: room.send_text(str(e))
 
     def process_command(self, room, event):
         sender = event['sender']
@@ -60,13 +62,13 @@ class AdminBot(Bot):
         tparts = text.split(':')
         name = tparts[1].strip()	
 
-#        try:
-        if True:
+        try:
+#        if True:
             if sender in self.admins:
                 room.send_text("کاربر جدید")
                 #name = text[len(self.new_user_command):]
                 passw = randrange(100000,999999)
-                commands = ["register_new_matrix_user","-u",name, "-p", "%d"%passw, "-c%s/homeserver.yaml" ,"--no-admin", "https://%s"%(self.synapse_home,self.server)]
+                commands = ["register_new_matrix_user","-u",name, "-p", "%d"%passw, "-c%s/homeserver.yaml"%self.synapse_home ,"--no-admin", "https://%s"%self.server]
                 #room.send_text(" ".join(commands))
                 print(subprocess.check_output(commands))
                 room.send_text("""سلام علیکم،
@@ -76,8 +78,9 @@ class AdminBot(Bot):
 %d
                 آدرس سرور:
 %s"""%(name,passw,self.server))
- #       except:
- #           room.send_text("خطا");
+        except Exception as e: 
+            traceback.print_exc()
+            room.send_text(str(e))
 
 
 
