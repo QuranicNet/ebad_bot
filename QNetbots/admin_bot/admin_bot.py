@@ -74,9 +74,14 @@ class AdminBot(Bot):
                 room.send_text("""سلام علیکم،
                 نام کاربری شما:
 %s
-                گذرواژه شما:
+
+گذرواژه شما:
 %d
-                آدرس سرور:
+
+آدرس دانلود نرم افزار:
+element.io/get-started
+
+آدرس سرور برای کپی هنگام لاگین در نرم افزار:
 %s"""%(name,passw,self.server))
         except Exception as e: 
             traceback.print_exc()
