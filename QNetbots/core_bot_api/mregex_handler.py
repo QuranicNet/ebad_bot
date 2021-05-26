@@ -20,9 +20,10 @@ class MRegexHandler(MHandler):
         print(event)
         # Test the message and see if it matches the regex
         if event['type'] == "m.room.message":
-            if re.search(self.regex_str, event['content']['body']):
-                # The message matches the regex, return true
-                print('recognized')
-                return True
+            if 'content' in event and 'body' in event['content']:
+                if re.search(self.regex_str, event['content']['body']):
+                    # The message matches the regex, return true
+                    print('recognized')
+                    return True
 
         return False

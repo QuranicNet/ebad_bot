@@ -1,6 +1,7 @@
 import os
 import traceback
 import re
+import time
 from matrix_client.client import MatrixClient
 from matrix_client.api import MatrixRequestError
 
@@ -105,18 +106,22 @@ class MatrixBotAPI:
     def handle_invite(self, room_id, state):
         print("Got invite to room: " + str(room_id))
         print(self.room_ids)
-        if self.accept_invites or self.room_ids is None or len(self.room_ids)==0 or room_id in self.room_ids:
-            print("Joining...")
-            room = self.client.join_room(room_id)
+        time.sleep(1)
+        try:
+            if self.accept_invites or self.room_ids is None or len(self.room_ids)==0 or room_id in self.room_ids:
+                print("Joining...")
+                room = self.client.join_room(room_id)
 
-            # Add message callback for this room
-            room.add_listener(self.handle_message)
+                # Add message callback for this room
+                room.add_listener(self.handle_message)
 
-            # Add room to list
-            self.rooms.append(room)
+                # Add room to list
+                self.rooms.append(room)
 
-        else:
-            print("Room not in allowed rooms list")
+            else:
+                print("Room not in allowed rooms list")
+        except:
+            traceback.print_exc()
 
     def start_polling(self):
         # Starts polling for messages

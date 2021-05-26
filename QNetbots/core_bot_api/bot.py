@@ -13,6 +13,9 @@ class Bot(object):
     def add_handler(self, handler):
         self.bot.add_handler(handler)
 
+    def add_general_listener(self,handler):
+        self.bot.add_general_listener(handler)
+
     def start_polling(self):
         self.bot.start_polling()
 
