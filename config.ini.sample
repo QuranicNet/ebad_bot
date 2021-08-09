@@ -1,20 +1,4 @@
 [mybot]
 user = 
 password = 
-server = quranic.network
-admins = @meisam:quranic.network,@ehsan:quranic.network
-synapse_home = /home/element/synapse
-
-[adminbot]
-user = 
-password = 
-server = quranic.network
-admins = @meisam:quranic.network,@ehsan:quranic.network
-synapse_home = /home/element/synapse
-
-[grpbot]
-user = 
-password = 
-server = quranic.network
-admins = @meisam:quranic.network,@ehsan:quranic.network
-synapse_home = /home/element/synapse
+server = ebad.quranic.network
