@@ -1,7 +1,4 @@
 from QNetbots.bots_simple.simple_bot import SimpleBot
-from QNetbots.admin_bot.admin_bot import AdminBot
-from QNetbots.admin_bot.group_bot import GroupSyncBot
-
 import configparser
 
 if __name__ == "__main__":
